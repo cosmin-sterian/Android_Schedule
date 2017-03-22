@@ -19,15 +19,7 @@ public class MainActivity extends Activity {
         luni.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Clicked Luni", Toast.LENGTH_SHORT).show();
                 startLuni(v);
-            }
-        });
-        luni.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(MainActivity.this, "LongClicked Luni", Toast.LENGTH_SHORT).show();
-                return true;
             }
         });
 
@@ -35,37 +27,18 @@ public class MainActivity extends Activity {
         marti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Clicked Marti", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        TextView miercuri = (TextView) findViewById(R.id.miercuri);
-        miercuri.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Clicked Miercuri", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        TextView joi = (TextView) findViewById(R.id.joi);
-        joi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Clicked Joi", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        TextView vineri = (TextView) findViewById(R.id.vineri);
-        vineri.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Clicked Vineri", Toast.LENGTH_SHORT).show();
+                startMarti(v);
             }
         });
     }
 
     public void startLuni(View v) {
         Intent intent = new Intent(this, LuniActivity.class);
+        startActivity(intent);
+    }
+
+    public void startMarti(View v) {
+        Intent intent = new Intent(this, MartiActivity.class);
         startActivity(intent);
     }
 }

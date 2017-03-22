@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ro.stery.orar.LuniActivity">
+    tools:context=".LuniActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -13,17 +13,15 @@
         android:maxLines="1"
         android:gravity="center"
         android:text="LUNI"
-        android:textSize="75sp"
-        android:layout_marginTop="40sp"/>
+        android:textSize="75sp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:orientation="vertical"
         android:divider="?android:dividerHorizontal"
-        android:showDividers="beginning|middle|end"
-        android:paddingTop="50sp">
+        android:showDividers="beginning|middle|end">
 
         <TextView
             android:layout_width="match_parent"
