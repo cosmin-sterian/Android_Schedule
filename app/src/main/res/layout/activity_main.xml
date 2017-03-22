@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="ro.stery.orar.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20sp"
+        android:orientation="vertical"
+        android:divider="?android:dividerHorizontal"
+        android:showDividers="beginning|middle|end"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/luni"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Luni"
+            android:gravity="center"
+            android:textSize="50sp"
+            android:background="@drawable/ripple_effect"/>
+
+        <TextView
+            android:id="@+id/marti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Marti"
+            android:gravity="center"
+            android:textSize="50sp"
+            android:background="@drawable/ripple_effect"/>
+
+        <TextView
+            android:id="@+id/miercuri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Miercuri"
+            android:gravity="center"
+            android:textSize="50sp"
+            android:background="@drawable/ripple_effect"/>
+
+        <TextView
+            android:id="@+id/joi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Joi"
+            android:gravity="center"
+            android:textSize="50sp"
+            android:background="@drawable/ripple_effect"/>
+
+        <TextView
+            android:id="@+id/vineri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vineri"
+            android:gravity="center"
+            android:textSize="50sp"
+            android:background="@drawable/ripple_effect"/>
+
+    </LinearLayout>
+
+</LinearLayout>
