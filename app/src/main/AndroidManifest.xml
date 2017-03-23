@@ -21,8 +21,10 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MartiActivity"
-            android:parentActivityName=".MainActivity">
-        </activity>
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".MiercuriActivity"
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>

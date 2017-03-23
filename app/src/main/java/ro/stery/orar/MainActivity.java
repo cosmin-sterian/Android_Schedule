@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
         luni.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startLuni(v);
+                startLuni();
             }
         });
 
@@ -27,18 +27,31 @@ public class MainActivity extends Activity {
         marti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startMarti(v);
+                startMarti();
+            }
+        });
+
+        TextView miercuri = (TextView) findViewById(R.id.miercuri);
+        miercuri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startMiercuri();
             }
         });
     }
 
-    public void startLuni(View v) {
+    public void startLuni() {
         Intent intent = new Intent(this, LuniActivity.class);
         startActivity(intent);
     }
 
-    public void startMarti(View v) {
+    public void startMarti() {
         Intent intent = new Intent(this, MartiActivity.class);
+        startActivity(intent);
+    }
+
+    public void startMiercuri() {
+        Intent intent = new Intent(this, MiercuriActivity.class);
         startActivity(intent);
     }
 }
