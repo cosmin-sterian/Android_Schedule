@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Orar</string>
+    <string name="weather_temp">0°C</string>
+    <string name="weather_city">City</string>
 </resources>

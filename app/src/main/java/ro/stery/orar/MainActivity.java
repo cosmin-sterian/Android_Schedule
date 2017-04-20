@@ -8,12 +8,23 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import ro.stery.orar.model.Weather;
+import ro.stery.orar.model.WeatherFormat;
+
 public class MainActivity extends Activity {
+    TextView weather_temp;
+    TextView weather_city;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        weather_temp = (TextView) findViewById(R.id.weather_temp);
+        weather_city = (TextView) findViewById(R.id.weather_city);
 
         TextView luni = (TextView) findViewById(R.id.luni);
         luni.setOnClickListener(new View.OnClickListener() {
@@ -38,6 +49,8 @@ public class MainActivity extends Activity {
                 startMiercuri();
             }
         });
+
+        fetchWeather();
     }
 
     public void startLuni() {
@@ -53,5 +66,35 @@ public class MainActivity extends Activity {
     public void startMiercuri() {
         Intent intent = new Intent(this, MiercuriActivity.class);
         startActivity(intent);
+    }
+
+    public void fetchWeather() {
+
+        Call<WeatherFormat> weatherFormatCall = Weather.Service.get().getWeather(Weather.city, Weather.key);
+        weatherFormatCall.enqueue(new Callback<WeatherFormat>() {
+            @Override
+            public void onResponse(Call<WeatherFormat> call, Response<WeatherFormat> response) {
+
+                if(response.isSuccessful()) {
+                    WeatherFormat weather = response.body();
+                    showWeather(weather);
+                    Toast.makeText(MainActivity.this, "blabla", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WeatherFormat> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(MainActivity.this, "No Internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    public void showWeather(WeatherFormat weather) {
+
+        String temperature = weather.getTemp() + "°C";
+        weather_temp.setText(temperature);
+
     }
 }

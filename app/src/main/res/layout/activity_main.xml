@@ -7,6 +7,26 @@
     android:orientation="vertical"
     tools:context="ro.stery.orar.MainActivity">
 
+    <TextView
+        android:id="@+id/weather_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/weather_temp"
+        android:textSize="30sp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="@string/weather_temp"/>
+
+    <TextView
+        android:id="@+id/weather_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/weather_city"
+        android:textSize="20sp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="-50dp"
+        android:text="@string/weather_city"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
