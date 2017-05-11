@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/weather_temp"
-        android:textSize="30sp"
+        android:textSize="30dp"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:text="@string/weather_temp"/>
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/weather_city"
-        android:textSize="20sp"
+        android:textSize="20dp"
         android:layout_gravity="center"
         android:layout_marginBottom="-50dp"
         android:text="@string/weather_city"/>
@@ -30,7 +30,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="20sp"
+        android:layout_margin="20dp"
         android:orientation="vertical"
         android:divider="?android:dividerHorizontal"
         android:showDividers="beginning|middle|end"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:text="Luni"
             android:gravity="center"
-            android:textSize="50sp"
+            android:textSize="50dp"
             android:background="@drawable/ripple_effect"
             android:clickable="true"/>
 
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:text="Marti"
             android:gravity="center"
-            android:textSize="50sp"
+            android:textSize="50dp"
             android:background="@drawable/ripple_effect"
             android:clickable="true"/>
 
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:text="Miercuri"
             android:gravity="center"
-            android:textSize="50sp"
+            android:textSize="50dp"
             android:background="@drawable/ripple_effect"
             android:clickable="true"/>
 
@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:text="Joi"
             android:gravity="center"
-            android:textSize="50sp"
+            android:textSize="50dp"
             android:background="@drawable/ripple_effect"
             android:clickable="true"/>
 
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:text="Vineri"
             android:gravity="center"
-            android:textSize="50sp"
+            android:textSize="50dp"
             android:background="@drawable/ripple_effect"
             android:clickable="true"/>
 

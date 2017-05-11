@@ -50,6 +50,14 @@ public class MainActivity extends Activity {
             }
         });
 
+        TextView joi = (TextView) findViewById(R.id.joi);
+        joi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startJoi();
+            }
+        });
+
         fetchWeather();
     }
 
@@ -65,6 +73,11 @@ public class MainActivity extends Activity {
 
     public void startMiercuri() {
         Intent intent = new Intent(this, MiercuriActivity.class);
+        startActivity(intent);
+    }
+
+    public void startJoi() {
+        Intent intent = new Intent(this, JoiActivity.class);
         startActivity(intent);
     }
 

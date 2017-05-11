@@ -25,7 +25,7 @@ public interface Weather {
 
         public synchronized static Weather get() {
             if(sInstance == null) {
-                sInstance = new Retrofit.Builder().baseUrl("http://api.openweathermap.org/data/2.5")
+                sInstance = new Retrofit.Builder().baseUrl("http://api.openweathermap.org/data/2.5/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build().create(Weather.class);
             }
