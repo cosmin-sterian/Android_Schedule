@@ -3,8 +3,10 @@ package ro.stery.orar;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -16,11 +18,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ro.stery.orar.model.Weather;
 import ro.stery.orar.model.WeatherFormat;
+import ro.stery.orar.receivers.OverchargingReceiver;
 import ro.stery.orar.services.OverchargingService;
 
 public class MainActivity extends Activity {
     TextView weather_temp;
     TextView weather_city;
+    BroadcastReceiver mBatteryReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +70,19 @@ public class MainActivity extends Activity {
 
         //---------------------------------------------- Debugging ----------------------------------------------
 
-        Notification notification = new Notification.Builder(this)
+        mBatteryReceiver = new OverchargingReceiver();
+        this.registerReceiver(mBatteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+
+        /*Notification notification = new Notification.Builder(this)
                 .setContentTitle("Orar")
                 .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setContentText("App running")
                 .setOngoing(true)
                 .build();
         NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(4, notification);
+        notificationManager.notify(4, notification);*/
 
-        //startService(new Intent(this, OverchargingService.class).putExtra("level", 0));
+        //startService(new Intent(this, OverchargingService.class).setAction(Contract.Overcharging.OVERCHARGING_WARN).putExtra("level", 0));
     }
 
     public void startLuni() {
@@ -128,5 +135,11 @@ public class MainActivity extends Activity {
         String temperature = weather.getTemp() + "°C";
         weather_temp.setText(temperature);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.unregisterReceiver(mBatteryReceiver);
     }
 }

@@ -17,7 +17,7 @@ public class OverchargingService extends IntentService {
 
     private static final int ID = 2;
 
-    @Override
+    /*@Override
     public void onCreate() {
         super.onCreate();
         Notification notification = new Notification.Builder(this)
@@ -29,41 +29,7 @@ public class OverchargingService extends IntentService {
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1, notification);
-    }
-
-    public class OverchargingReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null) {
-                final String action = intent.getAction();
-                if(action.equals(Intent.ACTION_BATTERY_CHANGED)) {
-                    int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-                    int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-                    float result = level/(float)scale;
-
-                    Intent intentService = new Intent(context, OverchargingService.class);
-                    intentService.setAction(Contract.Overcharging.OVERCHARGING_WARN);
-                    intentService.putExtra("level", result);
-                    startService(intentService);
-
-                    //overchargingWarn(result);
-
-                    Notification notification = new Notification.Builder(context)
-                            .setContentTitle("Receiver")
-                            .setSmallIcon(R.mipmap.ic_launcher_round)
-                            .setContentText("Broadcast Receiver running")
-                            .setOngoing(true)
-                            .build();
-                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                    notificationManager.notify(10, notification);
-                }
-            }
-        }
-
-        public OverchargingReceiver() { }
-
-    }
+    }*/
 
     public OverchargingService() {
         super("Overcharging Monitor Service");
@@ -74,12 +40,12 @@ public class OverchargingService extends IntentService {
         if(intent != null) {
             final String action = intent.getAction();
             if(action.equals(Contract.Overcharging.OVERCHARGING_WARN)) {
-                overchargingWarn(intent.getFloatExtra("level", 0));
+                overchargingWarn(intent.getIntExtra("level", -1));
             }
         }
     }
 
-    private void overchargingWarn(float level) {
+    private void overchargingWarn(int level) {
         Notification notification = new Notification.Builder(this)
                 .setContentTitle("Battery level")
                 .setSmallIcon(R.mipmap.ic_launcher_round)
