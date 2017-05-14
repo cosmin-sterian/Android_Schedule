@@ -1,6 +1,9 @@
 package ro.stery.orar;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ro.stery.orar.model.Weather;
 import ro.stery.orar.model.WeatherFormat;
+import ro.stery.orar.services.OverchargingService;
 
 public class MainActivity extends Activity {
     TextView weather_temp;
@@ -59,6 +63,19 @@ public class MainActivity extends Activity {
         });
 
         fetchWeather();
+
+        //---------------------------------------------- Debugging ----------------------------------------------
+
+        Notification notification = new Notification.Builder(this)
+                .setContentTitle("Orar")
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentText("App running")
+                .setOngoing(true)
+                .build();
+        NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(4, notification);
+
+        //startService(new Intent(this, OverchargingService.class).putExtra("level", 0));
     }
 
     public void startLuni() {
@@ -92,13 +109,15 @@ public class MainActivity extends Activity {
                     WeatherFormat weather = response.body();
                     showWeather(weather);
                     Toast.makeText(MainActivity.this, "blabla", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "[Orar] Some error occurred while fetching the weather", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<WeatherFormat> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(MainActivity.this, "No Internet connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "[ORAR] No Internet connection", Toast.LENGTH_SHORT).show();
             }
         });
 
