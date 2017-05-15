@@ -19,12 +19,13 @@ public class OverchargingReceiver extends BroadcastReceiver {
                 final String action = intent.getAction();
                 if(action.equals(Intent.ACTION_BATTERY_CHANGED)) {
                     int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-                    int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-                    int result = level / scale;
+                    //int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+                    //int result = level / scale;
 
                     Intent intentService = new Intent(context, OverchargingService.class);
                     intentService.setAction(Contract.Overcharging.OVERCHARGING_WARN);
-                    intentService.putExtra("level", result);
+                    //intentService.putExtra("level", result);
+                    intentService.putExtra("level", level);
                     context.startService(intentService);
 
                     //overchargingWarn(result);
