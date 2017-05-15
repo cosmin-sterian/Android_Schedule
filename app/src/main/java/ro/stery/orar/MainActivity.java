@@ -68,21 +68,8 @@ public class MainActivity extends Activity {
 
         fetchWeather();
 
-        //---------------------------------------------- Debugging ----------------------------------------------
-
         mBatteryReceiver = new OverchargingReceiver();
         this.registerReceiver(mBatteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-
-        /*Notification notification = new Notification.Builder(this)
-                .setContentTitle("Orar")
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setContentText("App running")
-                .setOngoing(true)
-                .build();
-        NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(4, notification);*/
-
-        //startService(new Intent(this, OverchargingService.class).setAction(Contract.Overcharging.OVERCHARGING_WARN).putExtra("level", 0));
     }
 
     public void startLuni() {
