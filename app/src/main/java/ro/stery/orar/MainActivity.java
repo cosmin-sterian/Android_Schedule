@@ -1,14 +1,13 @@
 package ro.stery.orar;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +23,9 @@ import ro.stery.orar.services.OverchargingService;
 public class MainActivity extends Activity {
     TextView weather_temp;
     TextView weather_city;
-    BroadcastReceiver mBatteryReceiver;
+    //BroadcastReceiver mBatteryReceiver;
+    boolean serviceRunning = false;
+    boolean firstRun = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +69,43 @@ public class MainActivity extends Activity {
 
         fetchWeather();
 
-        mBatteryReceiver = new OverchargingReceiver();
-        this.registerReceiver(mBatteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        /*mBatteryReceiver = new OverchargingReceiver();
+        this.registerReceiver(mBatteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));*/
+
+        if(firstRun) {
+            firstRun = false;
+            startService(new Intent(this, OverchargingService.class));
+        }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.main_services:
+                if(item.isChecked()) {
+                    serviceRunning = false;
+                    item.setChecked(serviceRunning);
+                    stopService(new Intent(MainActivity.this, OverchargingService.class));
+                } else {
+                    if(serviceRunning == true) {
+                        //Some error occured, the box is unchecked but the service is still running
+                        Toast.makeText(MainActivity.this, "Error occured: service is already running", Toast.LENGTH_SHORT).show();
+                    } else {
+                        serviceRunning = true;
+                        item.setChecked(serviceRunning);
+                        startService(new Intent(MainActivity.this, OverchargingService.class));
+                    }
+                }
+        }
+        return true;
     }
 
     public void startLuni() {
@@ -124,9 +160,9 @@ public class MainActivity extends Activity {
 
     }
 
-    @Override
+    /*@Override
     protected void onDestroy() {
         super.onDestroy();
         this.unregisterReceiver(mBatteryReceiver);
-    }
+    }*/
 }

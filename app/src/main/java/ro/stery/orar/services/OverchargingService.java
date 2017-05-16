@@ -1,81 +1,52 @@
 package ro.stery.orar.services;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
+import android.content.IntentFilter;
+import android.os.IBinder;
 
-import ro.stery.orar.Contract;
 import ro.stery.orar.R;
+import ro.stery.orar.receivers.OverchargingReceiver;
 
-public class OverchargingService extends IntentService {
+public class OverchargingService extends Service {
 
-    private static final int ID = 2;
-    private static final int warnID = 3;
-    private boolean overcharging = false;
+    private final BroadcastReceiver mReceiver = new OverchargingReceiver();
+    private final int closedID = 5;
 
     public OverchargingService() {
-        super("Overcharging Monitor Service");
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-        if(intent != null) {
-            final String action = intent.getAction();
-            if(action.equals(Contract.Overcharging.BATTERY_LEVEL)) {
-                overchargingWarn(intent.getIntExtra(Contract.Overcharging.level, -1),
-                                intent.getBooleanExtra(Contract.Overcharging.charging, false));
-            }
-        }
+    public void onCreate() {
+        IntentFilter intentFilter = new IntentFilter() {{
+            addAction(Intent.ACTION_BATTERY_CHANGED);
+            addAction(Intent.ACTION_POWER_CONNECTED);
+            addAction(Intent.ACTION_POWER_DISCONNECTED);
+        }};
+        registerReceiver(mReceiver, intentFilter);
     }
 
-    private void overchargingWarn(int level, boolean charging) {
-        final NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 
-        if(charging && level == 100) {
-            final Notification notification = new Notification.Builder(this)
-                    .setContentTitle("Overcharging")
-                    .setContentText("Battery is fully charged!")
-                    .setOngoing(true)
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .build();
-
-            Handler handler = new Handler();
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    notificationManager.notify(warnID, notification);
-                    overcharging = true;
-                    //TODO: Vibrate
-                }
-            };
-
-            handler.postDelayed(runnable, 2 * 60 * 1000);
-
-        }
-
-        if(overcharging && !charging) {
-            //The device was unplugged after being warned
-            overcharging = false;
-            notificationManager.cancel(warnID);
-        }
-
-        String notificationText = level + "% left";
-
-        if(charging)
-            notificationText += ", charging";
+    @Override
+    public void onDestroy() {
+        unregisterReceiver(mReceiver);
 
         Notification notification = new Notification.Builder(this)
-                .setContentTitle("Battery level")
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setContentText(notificationText)
-                .setOngoing(true)
+                .setContentTitle("OverchargingService")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentText("Service stopped")
                 .build();
 
-        notificationManager.notify(ID, notification);
-
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(closedID, notification);
     }
-
 }
