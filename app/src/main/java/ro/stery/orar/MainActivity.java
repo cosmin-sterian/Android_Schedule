@@ -66,10 +66,7 @@ public class MainActivity extends Activity {
 
         fetchWeather();
 
-        //Intent intent = new Intent(this, OverchargingService.class);
-        //stopService(intent);    //Preventing multiple instances of the same Service?
         startService(new Intent(this, OverchargingService.class));
-        Toast.makeText(this, "Service started", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -101,9 +98,7 @@ public class MainActivity extends Activity {
                 break;
             case R.id.main_vibrate:
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                long[] pattern = { 0,165,243,209,235,124,100,107,86,325,119,98,103,88,113,140,109,97,264,114,128,198,
-                        3000,165,243,209,235,124,100,107,86,325,119,98,103,88,113,140,109,97,264,114,128,198,0};
-                v.vibrate(pattern, -1);
+                v.vibrate(Contract.Overcharging.pattern, -1);
         }
         return true;
     }

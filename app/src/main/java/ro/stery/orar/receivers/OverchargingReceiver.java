@@ -7,8 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
 import android.os.Vibrator;
-import android.widget.Toast;
 
+import ro.stery.orar.Contract;
 import ro.stery.orar.R;
 
 public class OverchargingReceiver extends BroadcastReceiver {
@@ -19,6 +19,7 @@ public class OverchargingReceiver extends BroadcastReceiver {
     private Notification.Builder mBuilder = null;
     private Vibrator v = null;
     private boolean vibratorShouldContinue = false;
+    private final int vibrationWaitTime = 2 * 1000;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -27,7 +28,6 @@ public class OverchargingReceiver extends BroadcastReceiver {
             if (action.equals(Intent.ACTION_BATTERY_CHANGED)) {
                 int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
                 boolean charging = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1) == BatteryManager.BATTERY_PLUGGED_AC;
-                //| (intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1) == BatteryManager.BATTERY_PLUGGED_USB);
 
                 if (mBuilder == null) {
                     mBuilder = new Notification.Builder(context);
@@ -75,23 +75,6 @@ public class OverchargingReceiver extends BroadcastReceiver {
                 }
             }.start();
 
-
-            /*Handler handler = new Handler();
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    notificationManager.notify(warnID, notification);
-                    overcharging = true;
-                    //TODO: Vibrate
-                    overchargingVibrate();
-                }
-            };
-
-            //handler.postDelayed(runnable, 2 * 60 * 1000);
-            handler.postDelayed(runnable, 5 * 1000);*/
-
-
-
         }
 
         if (overcharging && !charging) {
@@ -100,7 +83,6 @@ public class OverchargingReceiver extends BroadcastReceiver {
             notificationManager.cancel(warnID);
             vibratorShouldContinue = false;
             v.cancel();
-            Toast.makeText(context, "Disabled shouldContinue asd", Toast.LENGTH_SHORT).show();
         }
 
         String notificationText = level + "% left";
@@ -120,10 +102,8 @@ public class OverchargingReceiver extends BroadcastReceiver {
     }
 
     public void overchargingVibrate() {
-        final long[] pattern = { 0,165,243,209,235,124,100,107,86,325,119,98,103,88,113,140,109,97,264,114,128,198,
-                           3000,165,243,209,235,124,100,107,86,325,119,98,103,88,113,140,109,97,264,114,128,198,0};
         long aux = 0;
-        for(long p : pattern)
+        for(long p : Contract.Overcharging.pattern)
             aux+=p;
 
         final long sum = aux;
@@ -132,11 +112,10 @@ public class OverchargingReceiver extends BroadcastReceiver {
             @Override
             public void run() {
                 while (vibratorShouldContinue) {
-                    v.vibrate(pattern, -1);
+                    v.vibrate(Contract.Overcharging.pattern, -1);
                     try {
-                        Thread.sleep(10 * 1000 + sum);
+                        Thread.sleep(vibrationWaitTime + sum);
                     } catch (InterruptedException e) {
-                        //e.printStackTrace();
                         Thread.currentThread().interrupt();
                     }
                 }
