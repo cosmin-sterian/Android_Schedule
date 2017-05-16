@@ -7,4 +7,8 @@
         android:title="Services"
         android:checked="true" />
 
+    <item
+        android:id="@+id/main_vibrate"
+        android:title="Vibrate" />
+
 </menu>

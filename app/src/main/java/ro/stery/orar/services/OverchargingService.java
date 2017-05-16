@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
+import android.widget.Toast;
 
+import ro.stery.orar.Contract;
 import ro.stery.orar.R;
 import ro.stery.orar.receivers.OverchargingReceiver;
 
@@ -28,6 +30,8 @@ public class OverchargingService extends Service {
             addAction(Intent.ACTION_POWER_DISCONNECTED);
         }};
         registerReceiver(mReceiver, intentFilter);
+
+        clearNotifications((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE), closedID);
     }
 
     @Override
@@ -48,5 +52,15 @@ public class OverchargingService extends Service {
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(closedID, notification);
+
+        clearNotifications(notificationManager, OverchargingReceiver.ID, OverchargingReceiver.warnID);
+
+        Toast.makeText(this, "Service stopped", Toast.LENGTH_SHORT).show();
+    }
+
+    public void clearNotifications(NotificationManager notificationManager, int ... IDs) {
+        for(int ID : IDs) {
+            notificationManager.cancel(ID);
+        }
     }
 }

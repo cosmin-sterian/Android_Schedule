@@ -3,6 +3,7 @@
           package="ro.stery.orar">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -34,7 +35,7 @@
         <service
             android:name=".services.OverchargingService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"/>
     </application>
 
 </manifest>

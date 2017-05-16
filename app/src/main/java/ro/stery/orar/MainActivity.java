@@ -1,10 +1,10 @@
 package ro.stery.orar;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,15 +17,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ro.stery.orar.model.Weather;
 import ro.stery.orar.model.WeatherFormat;
-import ro.stery.orar.receivers.OverchargingReceiver;
 import ro.stery.orar.services.OverchargingService;
 
 public class MainActivity extends Activity {
     TextView weather_temp;
     TextView weather_city;
-    //BroadcastReceiver mBatteryReceiver;
     boolean serviceRunning = false;
-    boolean firstRun = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +66,10 @@ public class MainActivity extends Activity {
 
         fetchWeather();
 
-        /*mBatteryReceiver = new OverchargingReceiver();
-        this.registerReceiver(mBatteryReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));*/
-
-        if(firstRun) {
-            firstRun = false;
-            startService(new Intent(this, OverchargingService.class));
-        }
+        //Intent intent = new Intent(this, OverchargingService.class);
+        //stopService(intent);    //Preventing multiple instances of the same Service?
+        startService(new Intent(this, OverchargingService.class));
+        Toast.makeText(this, "Service started", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -92,18 +86,24 @@ public class MainActivity extends Activity {
             case R.id.main_services:
                 if(item.isChecked()) {
                     serviceRunning = false;
-                    item.setChecked(serviceRunning);
+                    item.setChecked(false);
                     stopService(new Intent(MainActivity.this, OverchargingService.class));
                 } else {
-                    if(serviceRunning == true) {
+                    if(serviceRunning) {
                         //Some error occured, the box is unchecked but the service is still running
                         Toast.makeText(MainActivity.this, "Error occured: service is already running", Toast.LENGTH_SHORT).show();
                     } else {
                         serviceRunning = true;
-                        item.setChecked(serviceRunning);
+                        item.setChecked(true);
                         startService(new Intent(MainActivity.this, OverchargingService.class));
                     }
                 }
+                break;
+            case R.id.main_vibrate:
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                long[] pattern = { 0,165,243,209,235,124,100,107,86,325,119,98,103,88,113,140,109,97,264,114,128,198,
+                        3000,165,243,209,235,124,100,107,86,325,119,98,103,88,113,140,109,97,264,114,128,198,0};
+                v.vibrate(pattern, -1);
         }
         return true;
     }
@@ -159,10 +159,4 @@ public class MainActivity extends Activity {
         weather_temp.setText(temperature);
 
     }
-
-    /*@Override
-    protected void onDestroy() {
-        super.onDestroy();
-        this.unregisterReceiver(mBatteryReceiver);
-    }*/
 }
