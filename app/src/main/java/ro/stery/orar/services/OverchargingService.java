@@ -54,28 +54,28 @@ public class OverchargingService extends IntentService {
 
             handler.postDelayed(runnable, 2 * 60 * 1000);
 
-        } else {
-
-            if(overcharging) {
-                overcharging = false;
-                notificationManager.cancel(warnID);
-            }
-
-            String notificationText = level + "% left";
-
-            if(charging)
-                notificationText += ", charging";
-
-            Notification notification = new Notification.Builder(this)
-                    .setContentTitle("Battery level")
-                    .setSmallIcon(R.mipmap.ic_launcher_round)
-                    .setContentText(notificationText)
-                    .setOngoing(true)
-                    .build();
-
-            notificationManager.notify(ID, notification);
-
         }
+
+        if(overcharging && !charging) {
+            //The device was unplugged after being warned
+            overcharging = false;
+            notificationManager.cancel(warnID);
+        }
+
+        String notificationText = level + "% left";
+
+        if(charging)
+            notificationText += ", charging";
+
+        Notification notification = new Notification.Builder(this)
+                .setContentTitle("Battery level")
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentText(notificationText)
+                .setOngoing(true)
+                .build();
+
+        notificationManager.notify(ID, notification);
+
     }
 
 }
