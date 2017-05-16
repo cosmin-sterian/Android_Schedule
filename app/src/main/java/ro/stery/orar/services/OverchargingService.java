@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 import android.widget.Toast;
 
+import ro.stery.orar.Contract;
 import ro.stery.orar.R;
 import ro.stery.orar.receivers.OverchargingReceiver;
 
@@ -41,6 +42,15 @@ public class OverchargingService extends Service {
 
     @Override
     public void onDestroy() {
+        OverchargingReceiver.overcharging = false;
+        OverchargingReceiver.vibratorShouldContinue = false;
+        if(OverchargingReceiver.v != null)
+            OverchargingReceiver.v.cancel();
+        if(OverchargingReceiver.delayThread != null && OverchargingReceiver.delayThread.isAlive())
+            OverchargingReceiver.delayThread.interrupt();
+        if(OverchargingReceiver.vibrationThread != null && OverchargingReceiver.vibrationThread.isAlive())
+            OverchargingReceiver.delayThread.interrupt();
+
         unregisterReceiver(mReceiver);
 
         Notification notification = new Notification.Builder(this)

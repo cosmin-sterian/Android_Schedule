@@ -15,11 +15,14 @@ public class OverchargingReceiver extends BroadcastReceiver {
 
     public static final int ID = 2;
     public static final int warnID = 3;
-    private boolean overcharging = false;
+    public static boolean overcharging = false;
     private Notification.Builder mBuilder = null;
-    private Vibrator v = null;
-    private boolean vibratorShouldContinue = false;
+    public static Vibrator v = null;
+    public static boolean vibratorShouldContinue = false;
     private final int vibrationWaitTime = 2 * 1000;
+    private final int timeBeforeWarning = 10 * 1000;
+    public static Thread delayThread = null;
+    public static Thread vibrationThread = null;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -59,11 +62,11 @@ public class OverchargingReceiver extends BroadcastReceiver {
             vibratorShouldContinue = true;
             overcharging = true;
 
-            new Thread() {
+            delayThread = new Thread() {
                 @Override
                 public void run() {
                     try {
-                        Thread.sleep(10 * 1000);
+                        Thread.sleep(timeBeforeWarning);
 
                         if(vibratorShouldContinue) {
                             notificationManager.notify(warnID, notification);
@@ -73,7 +76,8 @@ public class OverchargingReceiver extends BroadcastReceiver {
                         Thread.currentThread().interrupt();
                     }
                 }
-            }.start();
+            };
+            delayThread.start();
 
         }
 
@@ -108,13 +112,14 @@ public class OverchargingReceiver extends BroadcastReceiver {
 
         final long sum = aux;
 
-        Thread vibrationThread = new Thread() {
+        vibrationThread = new Thread() {
             @Override
             public void run() {
                 while (vibratorShouldContinue) {
                     v.vibrate(Contract.Overcharging.pattern, -1);
                     try {
                         Thread.sleep(vibrationWaitTime + sum);
+                        v.cancel();
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
