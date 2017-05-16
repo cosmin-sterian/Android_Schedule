@@ -1,9 +1,13 @@
 package ro.stery.orar;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Vibrator;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,10 +17,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ro.stery.orar.model.Weather;
 import ro.stery.orar.model.WeatherFormat;
+import ro.stery.orar.services.OverchargingService;
 
 public class MainActivity extends Activity {
     TextView weather_temp;
     TextView weather_city;
+    boolean serviceRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +56,51 @@ public class MainActivity extends Activity {
             }
         });
 
+        TextView joi = (TextView) findViewById(R.id.joi);
+        joi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startJoi();
+            }
+        });
+
         fetchWeather();
+
+        startService(new Intent(this, OverchargingService.class));
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.main_services:
+                if(item.isChecked()) {
+                    serviceRunning = false;
+                    item.setChecked(false);
+                    stopService(new Intent(MainActivity.this, OverchargingService.class));
+                } else {
+                    if(serviceRunning) {
+                        //Some error occured, the box is unchecked but the service is still running
+                        Toast.makeText(MainActivity.this, "Error occured: service is already running", Toast.LENGTH_SHORT).show();
+                    } else {
+                        serviceRunning = true;
+                        item.setChecked(true);
+                        startService(new Intent(MainActivity.this, OverchargingService.class));
+                    }
+                }
+                break;
+            case R.id.main_vibrate:
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(Contract.Overcharging.pattern, -1);
+        }
+        return true;
     }
 
     public void startLuni() {
@@ -68,6 +118,11 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
+    public void startJoi() {
+        Intent intent = new Intent(this, JoiActivity.class);
+        startActivity(intent);
+    }
+
     public void fetchWeather() {
 
         Call<WeatherFormat> weatherFormatCall = Weather.Service.get().getWeather(Weather.city, Weather.key);
@@ -79,13 +134,15 @@ public class MainActivity extends Activity {
                     WeatherFormat weather = response.body();
                     showWeather(weather);
                     Toast.makeText(MainActivity.this, "blabla", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "[Orar] Some error occurred while fetching the weather", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<WeatherFormat> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(MainActivity.this, "No Internet connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "[ORAR] No Internet connection", Toast.LENGTH_SHORT).show();
             }
         });
 

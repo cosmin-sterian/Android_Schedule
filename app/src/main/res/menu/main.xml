@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/main_services"
+        android:checkable="true"
+        android:title="Services"
+        android:checked="true" />
+
+    <item
+        android:id="@+id/main_vibrate"
+        android:title="Vibrate" />
+
+</menu>

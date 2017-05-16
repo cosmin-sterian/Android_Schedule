@@ -13,8 +13,8 @@
         android:maxLines="1"
         android:gravity="center"
         android:text="LUNI"
-        android:textSize="75sp"
-        android:layout_marginTop="40sp"/>
+        android:textSize="60sp"
+        android:layout_marginTop="40dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
         android:orientation="vertical"
         android:divider="?android:dividerHorizontal"
         android:showDividers="beginning|middle|end"
-        android:paddingTop="50sp">
+        android:paddingTop="50dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:gravity="center"
             android:text="8:00 - LIBER - 11:00"
             android:maxLines="1"
-            android:textSize="40sp"/>
+            android:textSize="30sp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -39,7 +39,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="11:00 - PC (Curs) - 14:00"
-            android:textSize="35sp"/>
+            android:textSize="30sp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -47,7 +47,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="14:00 - CN1 (Lab) - 16:00"
-            android:textSize="35sp"/>
+            android:textSize="30sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,7 +81,7 @@
             android:gravity="center"
             android:text="18:00 - LIBER - 22:00"
             android:maxLines="1"
-            android:textSize="40sp"/>
+            android:textSize="30sp"/>
 
     </LinearLayout>
 
